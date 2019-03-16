@@ -1,6 +1,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
-DROP TABLE IF EXISTS Owners;
+-- DROP TABLE IF EXISTS Owners;
 DROP TABLE IF EXISTS Equipment_Categories;
 DROP TABLE IF EXISTS Equipment_Manufacturers;
 DROP TABLE IF EXISTS Equipment_Types;
@@ -11,12 +11,12 @@ DROP TABLE IF EXISTS Gyms;
 
 SET FOREIGN_KEY_CHECKS = 1;
 
-CREATE TABLE Owners(
-  owner_id int NOT NULL AUTO_INCREMENT,
-  owner_fname varchar(255),
-  owner_lname varchar(255),
-  PRIMARY KEY (owner_id)
-);
+-- CREATE TABLE Owners(
+--   owner_id int NOT NULL AUTO_INCREMENT,
+--   owner_fname varchar(255),
+--   owner_lname varchar(255),
+--   PRIMARY KEY (owner_id)
+-- );
 CREATE TABLE Equipment_Categories(
   equipment_category_id int NOT NULL AUTO_INCREMENT,
   equipment_category_name varchar(255) NOT NULL,
@@ -44,14 +44,13 @@ CREATE TABLE Extras_Types(
 CREATE TABLE Gyms(
   gym_id int NOT NULL AUTO_INCREMENT,
   gym_name varchar(255) NOT NULL,
-  gym_owner int DEFAULT NULL,
+  gym_owner varchar(255),
   gym_website varchar(255),
   gym_instagram varchar(255),
   gym_facebook varchar(255),
   gym_phone varchar(255),
   date_added date,
-  PRIMARY KEY (gym_id),
-  CONSTRAINT fk_gym_owner FOREIGN KEY (gym_owner) REFERENCES Owners(owner_id)
+  PRIMARY KEY (gym_id)
 );
 CREATE TABLE Gym_Equipment(
   gym_equipment_id int NOT NULL AUTO_INCREMENT,
@@ -72,10 +71,6 @@ CREATE TABLE Gym_Extras(
   CONSTRAINT fk_extra_type FOREIGN KEY (extra_type) REFERENCES Extras_Types(extra_id)
 );
 
-INSERT INTO Owners (owner_fname, owner_lname) VALUES
-  ('John', 'Doe'),
-  ('David', 'LaMartina'),
-  ('Eric', 'Bodhorn');
 INSERT INTO Equipment_Categories (equipment_category_name) VALUES
   ('Powerlifting'),
   ('Strongman');
@@ -86,6 +81,6 @@ INSERT INTO Equipment_Types (equipment_name, equipment_description, equipment_ca
 INSERT INTO Extras_Types (extra_name, extra_description) VALUES
   ('Turf', 'Great for athletes'),
   ('Benches', 'Great for sitting');
-INSERT INTO Gyms (gym_name, gym_owner, gym_website, date_added) VALUES
-  ('Elevate Barbell', 3, 'https://www.elevatebarbellclub.com/', '2019-03-15'),
-  ('Stone and Barbell Club', null, 'https://www.stoneandbarbellclub.com/', '2019-03-15');
+INSERT INTO Gyms (gym_name, gym_website, date_added) VALUES
+  ('Elevate Barbell', 'https://www.elevatebarbellclub.com/', '2019-03-15'),
+  ('Stone and Barbell Club', 'https://www.stoneandbarbellclub.com/', '2019-03-15');
