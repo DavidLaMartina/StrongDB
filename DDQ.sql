@@ -44,9 +44,9 @@ CREATE TABLE Extras_Types(
 CREATE TABLE Gyms(
   gym_id int NOT NULL AUTO_INCREMENT,
   gym_name varchar(255) NOT NULL,
-  gym_address varchar(255) NOT NULL,
-  gym_lat float(10, 6) NOT NULL,
-  gym_long float(10, 6) NOT NULL,
+  gym_address varchar(255),
+  gym_lat float(10, 6),
+  gym_long float(10, 6),
   gym_owner varchar(255),
   gym_website varchar(255),
   gym_instagram varchar(255),

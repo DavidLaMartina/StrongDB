@@ -2,3 +2,5 @@ Google MAPS API info, tips
 ***includes SQL Haversine calculation
 https://developers.google.com/maps/solutions/store-locator/clothing-store-locator
 https://console.cloud.google.com/apis
+Google Maps Geocoding for NodeJS:
+https://github.com/googlemaps/google-maps-services-js
