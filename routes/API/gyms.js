@@ -1,4 +1,5 @@
 var express             = require('express'),
+    queries             = require('../../queries/gyms.js'),
     router              = express.Router();
 
 // https://codeburst.io/node-js-mysql-and-promises-4c3be599909b
@@ -14,83 +15,68 @@ var express             = require('express'),
 //   });
 // }
 
+/* Return set of gyms based on search crit: # of pieces of types of equipment
+  Includes list of all available equipment types */
 router.get('/', function(req, res){
-  res.send("Hello from gym API route");
-})
-
+  var callBackCount = 0;
+  var context = {};
+  queries.getGyms(req, res, context, complete);
+  queries.getEquipment(req, res, context, complete);
+  function complete(){
+    callBackCount++;
+    if(callBackCount >= 2){
+      res.json(context);
+    }
+  }
+});
+/* Return specific gym with its equipment */
 router.get('/:gym_id', function(req, res){
-  var sql = "SELECT * FROM Gyms WHERE gym_id = ?";
-  var inserts = [req.params.gym_id];
-  mysql.pool.query(sql, inserts, function(error, results, fields){
-    if(error){
-      res.json(error);
-    }else{
-      res.json(results);
+  var callBackCount = 0;
+  var context = {};
+  queries.getGym(req, res, context, complete);
+  queries.getGymEquipment(req, res, context, complete);
+  function complete(){
+    callBackCount++;
+    if(callBackCount >= 2){
+      res.json(context);
     }
-  })
+  }
 });
-
+/* Create new gym */
 router.post('/', function(req, res){
-  var sql = "SELECT * FROM Owners WHERE owner_fname = ? AND owner_lname = ?";
-  var args = [req.body.owner_fname || null, req.body.owner_lname || null];
-  mysql.pool.query(owner_exists_sql, owner_exists_args, function(error, results, fields){
-    if(error){
-      res.json(error);
-    }else{
-      var owner_sql = "INSERT INTO Owners (owner_fname, owner_lname) VALUES (?,?)";
-      var owner_args = [req.body.owner_fname || null, req.body.owner_lname || null];
-      mysql.pool.query(owner_sql, owner_args, function(error, results, fields){
-        if(error){
-          res.json(error);
-        }else{
-          var gym_sql = "INSERT INTO Gyms (gym_name, gym_owner, gym_website, gym_instagram," +
-            "gym_facebook, gym_phone, date_added) VALUES (?,?,?,?,?,?,?)";
-          var gym_args = [
-            req.body.gym_name,
-            req.body.gym_owner || null,
-            req.body.gym_website || null,
-            req.body.gym_instagram || null,
-            req.body.gym_facebook || null,
-            req.body.gym_phone || null,
-            new Date() || null
-          ];
-          mysql.pool.query(gym_sql, gym_args, function(error, results, fields){
-            if(error){
-              res.json(error);
-            }else{
-              res.json(results);
-            }
-          })
-        }
-      })
+  var callBackCount = 0;
+  var context = {};
+  queries.addGym(req, res, context, complete);
+  function complete(){
+    callBackCount++;
+    if(callBackCount >= 1){
+      res.json(context);
     }
-  })
+  }
 });
-
-// router.post('/', function(req, res){
-//   var owner_sql = "INSERT INTO Owners (owner_fname, owner_lname) VALUES (?,?)";
-//   var owner_inserts = [
-//     req.body.owner_fname || null,
-//     req.body.owner_lname || null
-//   ]
-//   var sql = "INSERT INTO Gyms (gym_name, gym_owner, gym_website, gym_instagram," +
-//     "gym_facebook, gym_phone, date_added) VALUES (?,?,?,?,?,?,?)";
-//   var inserts = [
-//     req.body.gym_name,
-//     req.body.gym_owner || null,
-//     req.body.gym_website || null,
-//     req.body.gym_instagram || null,
-//     req.body.gym_facebook || null,
-//     req.body.gym_phone || null,
-//     new Date() || null
-//   ];
-//   mysql.pool.query(sql, inserts, function(error, results, fields){
-//     if(error){
-//       res.json(error);
-//     }else{
-//       res.json(results);
-//     }
-//   })
-// });
+/* Add equipment to gym */
+router.put('/:gym_id', function(req, res){
+  var callBackCount = 0;
+  var context = {};
+  queries.addGymEquipment(req, res, context, complete);
+  function complete(){
+    callBackCount++;
+    if(callBackCount >= 1){
+      res.json(context);
+    }
+  }
+})
+/* Delete gym */
+router.delete('/:gym_id', function(req, res){
+  var callBackCount = 0;
+  var context = {};
+  queries.deleteGym(req, res, context, complete);
+  function complete(){
+    callBackCount++;
+    if(callBackCount >= 1){
+      res.json(context);
+    }
+  }
+});
 
 module.exports = router;

@@ -1,0 +1,4 @@
+Google MAPS API info, tips
+***includes SQL Haversine calculation
+https://developers.google.com/maps/solutions/store-locator/clothing-store-locator
+https://console.cloud.google.com/apis
