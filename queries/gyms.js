@@ -5,32 +5,66 @@ const request           = require('request'),
         key: 'AIzaSyCT2hTK5nAFb3g9g0_dElmTyh5j-UX1dXA'
       });
 
-/* Get filtered list of gyms based on equipment numbers and address of origin */
+/* Get filtered list of gyms based on equipment numbers and address / distance */
 queries.getGyms = function(req, res, context, complete){
-  var sql = "SELECT g.gym_id, g.gym_name FROM " +
+  var sql = "SELECT g.gym_id, g.gym_name, (3959*acos(cos(radians(?))*cos(radians(gym_lat))*cos(radians(gym_long) - radians(?)) + sin(radians(?))*sin(radians(gym_lat)))) AS distance FROM " +
     "Gyms g LEFT JOIN " +
     "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
     "Equipment_Types et ON ge.equipment_type = et.equipment_id ";
-  if (Object.keys(req.query).length > 0) sql += "WHERE ";
+
+  var equipment_ids = JSON.parse(req.query.equipment);
+  var quantities = JSON.parse(req.query.quantities);
+
+  if(req.query.equipment) sql += "WHERE ";
+  // if(Object.keys(req.query.equipment).length > 0) sql += "WHERE ";
   var counter = 0;
-  for (const id in req.query){
+  for (let id of equipment_ids){
     sql += "g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge " +
       "WHERE ge.equipment_type = " + id + " AND " +
-      "ge.equipment_quantity >= " + req.query[id] + ")"
-    if (counter < Object.keys(req.query).length - 1) sql += " AND ";
+      "ge.equipment_quantity >= " + quantities[counter] + ")"
+    if (counter < equipment_ids.length - 1) sql += " AND ";
     counter++;
   }
-  sql += "GROUP BY g.gym_id";
+  sql += " GROUP BY g.gym_id " + "HAVING distance < ? " + "ORDER BY distance";
 
-  mysql.pool.query(sql, function(error, results, fields){
+  args = [req.query.lat, req.query.lng, req.query.lat, req.query.distance];
+
+  mysql.pool.query(sql, args, function(error, results, fields){
     if(error){
       context.gyms = JSON.stringify(error);
     }else{
       context.gyms = results;
+      complete();
     }
-    complete();
   });
 }
+
+/* Get filtered list of gyms based on equipment numbers and address of origin */
+// queries.getGyms = function(req, res, context, complete){
+//   var sql = "SELECT g.gym_id, g.gym_name FROM " +
+//     "Gyms g LEFT JOIN " +
+//     "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
+//     "Equipment_Types et ON ge.equipment_type = et.equipment_id ";
+//   if (Object.keys(req.query).length > 0) sql += "WHERE ";
+//   var counter = 0;
+//   for (const id in req.query){
+//     sql += "g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge " +
+//       "WHERE ge.equipment_type = " + id + " AND " +
+//       "ge.equipment_quantity >= " + req.query[id] + ")"
+//     if (counter < Object.keys(req.query).length - 1) sql += " AND ";
+//     counter++;
+//   }
+//   sql += "GROUP BY g.gym_id";
+//
+//   mysql.pool.query(sql, function(error, results, fields){
+//     if(error){
+//       context.gyms = JSON.stringify(error);
+//     }else{
+//       context.gyms = results;
+//     }
+//     complete();
+//   });
+// }
 
 /* Get list of possible equipment */
 queries.getEquipment = function(req, res, context, complete){
