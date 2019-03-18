@@ -47,6 +47,9 @@ CREATE TABLE Gyms(
   gym_address varchar(255),
   gym_lat float(10, 6),
   gym_long float(10, 6),
+  gym_city varchar(255),    /* Taken from geocode */
+  gym_state varchar(255),   /* Taken from geocode */
+  gym_image varchar(255),   /* URL for now */
   gym_owner varchar(255),
   gym_website varchar(255),
   gym_instagram varchar(255),

@@ -2,5 +2,16 @@ Google MAPS API info, tips
 ***includes SQL Haversine calculation
 https://developers.google.com/maps/solutions/store-locator/clothing-store-locator
 https://console.cloud.google.com/apis
+
+other Google Maps notes:
+https://developers.google.com/maps/solutions/store-locator/intro
+https://developers.google.com/maps/documentation/geocoding/intro
+
 Google Maps Geocoding for NodeJS:
 https://github.com/googlemaps/google-maps-services-js
+
+HTTP request primer:
+https://www.twilio.com/blog/2017/08/http-requests-in-node-js.html
+
+Parsing query arrays in URL:
+https://stackoverflow.com/questions/22080770/i-need-to-create-url-for-get-which-is-going-to-accept-array-how-in-node-js-expr

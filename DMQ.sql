@@ -18,6 +18,17 @@ SELECT g.gym_id, g.gym_name FROM
   g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge WHERE ge.equipment_type = 2)
   GROUP BY g.gym_id;
 
+/* Select gyms based on quantities of equipment AND address */
+SELECT g.gym_id, g.gym_name, ( 3959 * acos( cos( radians(40.58) ) * cos( radians( gym_lat ) ) * cos( radians( gym_long ) - radians(-105.08) ) + sin( radians(40.58) ) * sin( radians( gym_lat ) ) ) ) AS distance FROM
+  Gyms g LEFT JOIN
+  Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN
+  Equipment_Types et ON ge.equipment_type = et.equipment_id WHERE
+  g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge WHERE ge.equipment_type = 1) AND
+  g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge WHERE ge.equipment_type = 2)
+  GROUP BY g.gym_id
+  HAVING distance < 25
+  ORDER BY distance;
+
 /* Get list of possible equipment and max quantities */
 SELECT * FROM Equipment_Types;
 
@@ -35,3 +46,5 @@ SELECT et.equipment_id, et.equipment_name, ge.equipment_quantity FROM
 INSERT INTO Gym_Equipment (equipment_gym, equipment_type, equipment_quantity) VALUES
   (?, ?, ?,),
   (?, ?, ?,),
+
+SELECT gym_id, ( 3959 * acos( cos( radians(40.58) ) * cos( radians( gym_lat ) ) * cos( radians( gym_long ) - radians(-105.08) ) + sin( radians(40.58) ) * sin( radians( gym_lat ) ) ) ) AS distance FROM Gyms HAVING distance < 25 ORDER BY distance LIMIT 0 , 20;

@@ -5,7 +5,7 @@ const request           = require('request'),
         key: 'AIzaSyCT2hTK5nAFb3g9g0_dElmTyh5j-UX1dXA'
       });
 
-/* Get filtered list of gyms based on equipment numbers */
+/* Get filtered list of gyms based on equipment numbers and address of origin */
 queries.getGyms = function(req, res, context, complete){
   var sql = "SELECT g.gym_id, g.gym_name FROM " +
     "Gyms g LEFT JOIN " +
@@ -31,6 +31,7 @@ queries.getGyms = function(req, res, context, complete){
     complete();
   });
 }
+
 /* Get list of possible equipment */
 queries.getEquipment = function(req, res, context, complete){
   var sql = "SELECT * FROM Equipment_Types";
