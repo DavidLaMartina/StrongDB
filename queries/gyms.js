@@ -7,27 +7,38 @@ const request           = require('request'),
 
 /* Get filtered list of gyms based on equipment numbers and address / distance */
 queries.getGyms = function(req, res, context, complete){
-  var sql = "SELECT g.gym_id, g.gym_name, (3959*acos(cos(radians(?))*cos(radians(gym_lat))*cos(radians(gym_long) - radians(?)) + sin(radians(?))*sin(radians(gym_lat)))) AS distance FROM " +
-    "Gyms g LEFT JOIN " +
-    "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
-    "Equipment_Types et ON ge.equipment_type = et.equipment_id ";
+  var sql;
+  var args = [];
+  var last_part = "";
+  if(req.query.lat && req.query.lng && req.query.distance){
+    args = [req.query.lat, req.query.lng, req.query.lat, req.query.distance];
+    sql = "SELECT g.gym_id, g.gym_name, (3959*acos(cos(radians(?))*cos(radians(gym_lat))*cos(radians(gym_long) - radians(?)) + sin(radians(?))*sin(radians(gym_lat)))) AS distance FROM " +
+      "Gyms g LEFT JOIN " +
+      "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
+      "Equipment_Types et ON ge.equipment_type = et.equipment_id ";
 
-  var equipment_ids = JSON.parse(req.query.equipment);
-  var quantities = JSON.parse(req.query.quantities);
-
-  if(req.query.equipment) sql += "WHERE ";
-  // if(Object.keys(req.query.equipment).length > 0) sql += "WHERE ";
-  var counter = 0;
-  for (let id of equipment_ids){
-    sql += "g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge " +
-      "WHERE ge.equipment_type = " + id + " AND " +
-      "ge.equipment_quantity >= " + quantities[counter] + ")"
-    if (counter < equipment_ids.length - 1) sql += " AND ";
-    counter++;
+    last_part = "HAVING distance < ? " + "ORDER BY distance";
+  }else{
+    sql = "SELECT g.gym_id, g.gym_name FROM " +
+      "Gyms g LEFT JOIN " +
+      "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
+      "Equipment_Types et ON ge.equipment_type = et.equipment_id ";
   }
-  sql += " GROUP BY g.gym_id " + "HAVING distance < ? " + "ORDER BY distance";
+  if (req.query.equipment && req.query.quantities){
+    sql += " WHERE ";
+    var equipment_ids = JSON.parse(req.query.equipment);
+    var quantities = JSON.parse(req.query.quantities);
 
-  args = [req.query.lat, req.query.lng, req.query.lat, req.query.distance];
+    var counter = 0;
+    for (let id of equipment_ids){
+      sql += "g.gym_id IN (SELECT ge.equipment_gym FROM Gym_Equipment ge " +
+        "WHERE ge.equipment_type = " + id + " AND " +
+        "ge.equipment_quantity >= " + quantities[counter] + ")"
+      if (counter < equipment_ids.length - 1) sql += " AND ";
+      counter++;
+    }
+  }
+  sql += " GROUP BY g.gym_id " + last_part;
 
   mysql.pool.query(sql, args, function(error, results, fields){
     if(error){
