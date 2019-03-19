@@ -12,7 +12,7 @@ queries.getGyms = function(req, res, context, complete){
   var last_part = "";
   if(req.query.lat && req.query.lng && req.query.distance){
     args = [req.query.lat, req.query.lng, req.query.lat, req.query.distance];
-    sql = "SELECT g.gym_id, g.gym_name, (3959*acos(cos(radians(?))*cos(radians(gym_lat))*cos(radians(gym_long) - radians(?)) + sin(radians(?))*sin(radians(gym_lat)))) AS distance FROM " +
+    sql = "SELECT g.gym_id, g.gym_name, g.gym_address, g.gym_lat, g.gym_long, (3959*acos(cos(radians(?))*cos(radians(gym_lat))*cos(radians(gym_long) - radians(?)) + sin(radians(?))*sin(radians(gym_lat)))) AS distance FROM " +
       "Gyms g LEFT JOIN " +
       "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
       "Equipment_Types et ON ge.equipment_type = et.equipment_id ";

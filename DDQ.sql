@@ -103,7 +103,7 @@ INSERT INTO Extras_Types (extra_name, extra_description) VALUES
   ('Benches', 'Great for sitting'),
   ('Loft', 'Fun times');
 INSERT INTO Gyms (gym_name, gym_address, gym_lat, gym_long) VALUES
-  ('Elevate Barbell', '111 S College Ave, Fort Collins, CO 80526', 40.587440, -105.077499),
+  ('Elevate Barbell', '2111 S College Ave, Fort Collins, CO 80526', 40.587440, -105.077499),
   ('Stone and Barbell Club', '7897 Mastin Drive, Overland Park, Kansas', 38.986060, -94.700960),
   ('Strong Barbell Club', '7932 N Oak Trafficway Suite 239, Kansas City, MO 64118', 39.238701, -94.576439);
 INSERT INTO Gym_Equipment (equipment_gym, equipment_type, equipment_quantity) VALUES

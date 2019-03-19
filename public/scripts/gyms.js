@@ -1,4 +1,6 @@
 $(document).ready(function(){
+  initMap();
+
   $.getJSON("/api/gyms")
   .then(function(data){
     addGyms(data.gyms);
@@ -46,14 +48,14 @@ function searchGyms(){
     equipment.push(equipment_id);
     quantities.push(equipment_qty);
 
-    url += "&equipment=" + JSON.stringify(equipment) + "&quantities=" + JSON.stringify(quantities);    
+    url += "&equipment=" + JSON.stringify(equipment) + "&quantities=" + JSON.stringify(quantities);
     return $.getJSON(url)
   })
   .then(function(data){
-    console.log(data.gyms);
     clearGyms();
     addGyms(data.gyms);
-  })
+    searchLocations($("#address").val(), distance, data.gyms);
+  });
 }
 function clearGyms(){
   var rows = $("#gym-table").children();
