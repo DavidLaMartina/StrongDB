@@ -19,7 +19,7 @@ queries.getGyms = function(req, res, context, complete){
 
     last_part = "HAVING distance < ? " + "ORDER BY distance";
   }else{
-    sql = "SELECT g.gym_id, g.gym_name FROM " +
+    sql = "SELECT g.gym_id, g.gym_name, g.gym_lat, g.gym_long FROM " +
       "Gyms g LEFT JOIN " +
       "Gym_Equipment ge ON g.gym_id = ge.equipment_gym LEFT JOIN " +
       "Equipment_Types et ON ge.equipment_type = et.equipment_id ";

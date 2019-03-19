@@ -2,9 +2,13 @@ var express             = require('express'),
     router              = express.Router(),
     axios               = require('axios');
 
+let axiosInstance = axios.create({
+  baseURL: process.env.BASE_URL
+});
+
 router.get('/', function(req, res){
-  // Call GET API function - get all gyms
-  axios.get('http://localhost:3000/api/gyms')
+  // Get all gyms
+  axiosInstance.get('API/gyms')
     .then(response => {
       res.render("index", response.data);
     })
@@ -12,5 +16,15 @@ router.get('/', function(req, res){
       res.render("index");
     })
 });
+router.get('/:gym_id', function(req, res){
+  // Get one specific gym
+  axiosInstance.get('API/gyms/:gym_id')
+    .then(response => {
+      res.render("show", response.data);
+    })
+    .catch(error => {
+      res.render("show");
+    })
+})
 
 module.exports = router;

@@ -51,11 +51,26 @@ function searchGyms(){
     url += "&equipment=" + JSON.stringify(equipment) + "&quantities=" + JSON.stringify(quantities);
     return $.getJSON(url)
   })
+  .catch(function(data){
+    var url = "/api/gyms?";
+    equipment = [];
+    quantities = [];
+    equipment.push(equipment_id);
+    quantities.push(equipment_qty);
+
+    url += "&equipment=" + JSON.stringify(equipment) + "&quantities=" + JSON.stringify(quantities);
+    return $.getJSON(url)
+  })
   .then(function(data){
     clearGyms();
     addGyms(data.gyms);
     searchLocations($("#address").val(), distance, data.gyms);
   });
+  // .catch(function(data){
+  //   clearGyms();
+  //   addGyms(data.gyms);
+  //   searchLocations($("#address").val(), distance, data.gyms);
+  // })
 }
 function clearGyms(){
   var rows = $("#gym-table").children();
@@ -63,12 +78,3 @@ function clearGyms(){
     row.remove();
   }
 }
-// function addGyms(gyms){
-//   var rows = $("#gym-table").children();
-//   for (let gym of gyms){
-//     var newGym = $('<tr></tr>');
-//     rows.append(newGym);
-//     var newName = $('<td>'+gym.gym_name+'</td>');
-//     newGym.append(newName);
-//   }
-// }
