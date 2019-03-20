@@ -31,7 +31,7 @@ CREATE TABLE Equipment_Types(
   equipment_id int NOT NULL AUTO_INCREMENT,
   equipment_name varchar(255) NOT NULL,
   equipment_description varchar(255),
-  equipment_category int NOT NULL,
+  equipment_category int,
   PRIMARY KEY (equipment_id),
   CONSTRAINT fk_equipment_category FOREIGN KEY (equipment_category) REFERENCES Equipment_Categories(equipment_category_id)
 );
@@ -89,15 +89,15 @@ INSERT INTO Equipment_Categories (equipment_category_name) VALUES
   ('Racks and Cages'),
   ('Dumbbells'),
   ('Plates');
-INSERT INTO Equipment_Types (equipment_name, equipment_description, equipment_category) VALUES
-  ('ER Rack', 'The best for meets', 7),
-  ('Glute Ham Raise', 'Build them pork chords', 5),
-  ('Reverse Hyperextension', null, 5),
-  ('Husafel Stones', null, 2),
-  ('Calibrated Plates, Powerlifting', null, 9),
-  ('Deadlift Bar', null, 1),
-  ('Squat Bar', null, 1),
-  ('Power Bar', null, 1);
+INSERT INTO Equipment_Types (equipment_name, equipment_description) VALUES
+  ('ER Rack', 'The best for meets'),
+  ('Glute Ham Raise', 'Build them pork chords'),
+  ('Reverse Hyperextension', null),
+  ('Husafel Stones', null),
+  ('Calibrated Plates, Powerlifting', null),
+  ('Deadlift Bar', null),
+  ('Squat Bar', null),
+  ('Power Bar', null);
 INSERT INTO Extras_Types (extra_name, extra_description) VALUES
   ('Turf', 'Great for athletes'),
   ('Benches', 'Great for sitting'),
@@ -107,20 +107,15 @@ INSERT INTO Gyms (gym_name, gym_address, gym_lat, gym_long, gym_image) VALUES
   ('Stone and Barbell Club', '7897 Mastin Drive, Overland Park, Kansas', 38.986060, -94.700960, "https://mediaprocessor.websimages.com/width/220/crop/0,0,220x132/www.stoneandbarbellclub.com/12.jpg"),
   ('Strong Barbell Club', '7932 N Oak Trafficway Suite 239, Kansas City, MO 64118', 39.238701, -94.576439, "https://s3-media1.fl.yelpcdn.com/bphoto/lSJA-7op1VQ3ij-PuKIC2w/o.jpg");
 INSERT INTO Gym_Equipment (equipment_gym, equipment_type, equipment_quantity) VALUES
-  (1, 1, 4),
-  (1, 2, 1),
-  (1, 5, 100),
-  (1, 8, 150),
-  (2, 1, 3),
-  (2, 2, 1),
-  (2, 5, 50),
-  (2, 4, 2),
-  (3, 1, 3),
-  (3, 8, 8);
-INSERT INTO Gym_Extras (extra_gym, extra_type, extra_quantity) VALUES
-  (1, 3, 1),
-  (1, 1, 1),
-  (2, 2, 1),
-  (3, 1, 1),
-  (3, 2, 1),
-  (3, 3, 1);
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Elevate Barbell'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='ER Rack'), 4),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Elevate Barbell'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Glute Ham Raise'), 1),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Elevate Barbell'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Calibrated Plates, Powerlifting'), 4),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Elevate Barbell'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Power Bar'), 12),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Stone and Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='ER Rack'), 3),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Stone and Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Glute Ham Raise'), 1),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Stone and Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Calibrated Plates, Powerlifting'), 3),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Stone and Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Husafel Stones'), 3),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Strong Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='ER Rack'), 4),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Strong Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Glute Ham Raise'), 2),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Strong Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Reverse Hyperextension'), 1),
+  ((SELECT gym_id FROM Gyms WHERE gym_name='Strong Barbell Club'), (SELECT equipment_id FROM Equipment_Types WHERE equipment_name='Squat Bar'), 3);

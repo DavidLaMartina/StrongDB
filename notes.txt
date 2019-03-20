@@ -18,3 +18,7 @@ https://stackoverflow.com/questions/22080770/i-need-to-create-url-for-get-which-
 
 Serializing form data for less verbose post submissions - use in refactor
 https://stackoverflow.com/questions/10899384/uploading-both-data-and-files-in-one-form-using-ajax
+
+ClearDB:
+mysql://b64c7ded36d292:9d0b3fa0@us-cdbr-iron-east-03.cleardb.net/heroku_f8e13520c0b254e?reconnect=true
+https://stackoverflow.com/questions/9822313/remote-connect-to-cleardb-heroku-database/10357757
