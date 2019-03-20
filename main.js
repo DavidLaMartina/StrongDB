@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static(__dirname + '/views'));
 app.use(express.static(__dirname + '/public'));
 
-app.set('port', process.argv[2]);
+app.set('port', process.env.PORT || process.argv[2]);
 app.set('mysql', mysql);
 app.set('view engine', "ejs");
 
