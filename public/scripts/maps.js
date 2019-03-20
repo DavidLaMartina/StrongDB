@@ -3,13 +3,13 @@
 
 var map;
 var starting_point;       // Starting address
-var markers = []; // Gyms addresses
+var markers = [];         // Gyms addresses
 var infoWindow;
 var locationSelect;
 
 function initMap() {
   var home = {lat: 40.417134, lng: -105.019696};
-  map = new google.maps.Map(document.getElementById('map'), {
+  map = new google.maps.Map(document.getElementById('main-map'), {
     center: home,
     zoom: 11,
     gestureHandling: 'greedy',
@@ -17,7 +17,7 @@ function initMap() {
     mapTypeControlOptions: {style: google.maps.MapTypeControlStyle.DROPDOWN_MENU}
   });
   infoWindow = new google.maps.InfoWindow();
-  locationSelect = document.getElementById("locationSelect");
+  locationSelect = document.getElementById("main-locationSelect");
   locationSelect.onchange = function() {
     var markerNum = locationSelect.options[locationSelect.selectedIndex].value;
     if (markerNum != "none"){

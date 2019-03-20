@@ -102,10 +102,10 @@ INSERT INTO Extras_Types (extra_name, extra_description) VALUES
   ('Turf', 'Great for athletes'),
   ('Benches', 'Great for sitting'),
   ('Loft', 'Fun times');
-INSERT INTO Gyms (gym_name, gym_address, gym_lat, gym_long) VALUES
-  ('Elevate Barbell', '2111 S College Ave, Fort Collins, CO 80526', 40.587440, -105.077499),
-  ('Stone and Barbell Club', '7897 Mastin Drive, Overland Park, Kansas', 38.986060, -94.700960),
-  ('Strong Barbell Club', '7932 N Oak Trafficway Suite 239, Kansas City, MO 64118', 39.238701, -94.576439);
+INSERT INTO Gyms (gym_name, gym_address, gym_lat, gym_long, gym_image) VALUES
+  ('Elevate Barbell', '2111 S College Ave, Fort Collins, CO 80526', 40.587440, -105.077499, "https://static1.squarespace.com/static/5b3052557c9327f005315e1d/t/5c12ef580ebbe886df31118c/1544744822038/48371214_306262570229897_136233515065802752_n.jpg?format=1500w"),
+  ('Stone and Barbell Club', '7897 Mastin Drive, Overland Park, Kansas', 38.986060, -94.700960, "https://mediaprocessor.websimages.com/width/220/crop/0,0,220x132/www.stoneandbarbellclub.com/12.jpg"),
+  ('Strong Barbell Club', '7932 N Oak Trafficway Suite 239, Kansas City, MO 64118', 39.238701, -94.576439, "https://s3-media1.fl.yelpcdn.com/bphoto/lSJA-7op1VQ3ij-PuKIC2w/o.jpg");
 INSERT INTO Gym_Equipment (equipment_gym, equipment_type, equipment_quantity) VALUES
   (1, 1, 4),
   (1, 2, 1),

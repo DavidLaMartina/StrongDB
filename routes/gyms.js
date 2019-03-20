@@ -16,14 +16,27 @@ router.get('/', function(req, res){
       res.render("index");
     })
 });
-router.get('/:gym_id', function(req, res){
+router.get('/gyms/:gym_id', function(req, res){
   // Get one specific gym
-  axiosInstance.get('API/gyms/:gym_id')
+  axiosInstance.get('API/gyms/' + req.params.gym_id)
     .then(response => {
-      res.render("show", response.data);
+      if(response.data.gym){
+        res.render("show", response.data);
+      }else{
+        res.send("gym not found");
+      }
     })
     .catch(error => {
-      res.render("show");
+      res.send("Gym not found");
+    })
+})
+router.get('/new', function(req, res){
+  axiosInstance.get('API/equipment')
+    .then(response => {
+      res.render('new', response.data);
+    })
+    .catch(error => {
+      res.send('Error generating new gym page');
     })
 })
 

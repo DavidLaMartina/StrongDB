@@ -3,6 +3,7 @@ require('./config.js');
 var express             = require('express'),
     bodyParser          = require('body-parser');
     mysql               = require('./dbcon.js');
+    axios               = require('axios');
 
 var app                 = express();
 
@@ -19,7 +20,9 @@ app.set('view engine', "ejs");
 
 var gymAPI = require('./routes/API/gyms');
 app.use('/api/gyms', gymAPI);
-var gymWebApp = require('./routes/gyms')
+var equipmentAPI = require('./routes/API/equipment');
+app.use('/api/equipment', equipmentAPI);
+var gymWebApp = require('./routes/gyms');
 app.use('/', gymWebApp);
 
 app.get('/', function(req, res){

@@ -18,7 +18,7 @@ function addGyms(gyms){
   gyms.forEach(function(gym){
     var newGym = $('<tr></tr>');
     $('#gym-table').append(newGym);
-    var name = $('<td>'+gym.gym_name+'</td>');
+    var name = $('<td><a href=/gyms/' + gym.gym_id + '>' + gym.gym_name + '</a></td>');
     newGym.append(name);
     var city = $('<td>' + gym.city + '</td>');
     newGym.append(city);

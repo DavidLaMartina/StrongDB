@@ -2,6 +2,12 @@
   width: 100%;
   height: 100%;
 }
-#map{
+.gym-image{
+  width: 500px;
+}
+#main-map{
   height: 400px;
+}
+form > .form-inline > input{
+  width: 500px;
 }

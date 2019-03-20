@@ -1,8 +1,43 @@
 <% include partials/header %>
 
-<h1> You're on the show page! </h1>
+<div class = "container">
+
+  <h1><%= gym.gym_name %></h1>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <p><%= gym.gym_address %></p>
+        <p>Owner: <%= gym.gym_owner %></p>
+        <p><%= gym.gym_instagram %></p>
+        <p><%= gym.gym_facebook %></p>
+        <p><%= gym.gym_phone %></p>
+      </div>
+      <div class="col-lg-6">
+        <img class="gym-image" src="<%= gym.gym_image %>">
+      </div>
+    </div>
+  </div>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-lg-6">
+        <div id="main-map"></div>
+      </div>
+      <div class="col-lg-6">
+        <p>Available equipment</p>
+        <% equipment.forEach(function(piece){ %>
+          <p><%= piece.equipment_name %> : <%= piece.equipment_quantity %></p>
+        <% }) %>
+      </div>
+    </div>
+  </div>
+
+</div>
 
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCT2hTK5nAFb3g9g0_dElmTyh5j-UX1dXA"></script>
-<script src="./scripts/maps.js"></script>
-<script src="./scripts/gyms.js"></script>
+<!-- <script src="./scripts/maps.js"></script> -->
+<script src="/scripts/show.js"></script>
+<script>var gym_id = <%= gym.gym_id %></script>
+
 <% include partials/footer %>

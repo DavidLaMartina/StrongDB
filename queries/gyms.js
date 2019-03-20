@@ -97,7 +97,7 @@ queries.getGym = function(req, res, context, complete){
     if(error){
       context.gym = JSON.stringify(error);
     }else{
-      context.gym = results;
+      context.gym = results[0];
     }
     complete();
   });
@@ -133,12 +133,6 @@ queries.getGymEquipment = function(req, res, context, complete){
 
 /* Create new gym */
 queries.addGym = function(req, res, context, complete){
-  // First need to generate coords for DB
-  // var street_address = encodeURIComponent(req.body.gym_address);
-  // var apiKey = "AIzaSyCT2hTK5nAFb3g9g0_dElmTyh5j-UX1dXA";
-  // var url = "https://maps.googleapis.com/maps/api/geocode/json?address=" +
-  //   street_address + "&key=" + apiKey;
-  // console.log(url);
   googleMapsClient.geocode({
     address: req.body.gym_address
   }, function(geo_err, geo_res){
@@ -149,14 +143,16 @@ queries.addGym = function(req, res, context, complete){
     }else{
       var coords = geo_res.json.results[0].geometry.location;
       var sql = "INSERT INTO Gyms (gym_name, gym_address, gym_lat, gym_long, " +
-        "gym_owner, gym_website, gym_instagram, gym_facebook, gym_phone, " +
-        "date_added) VALUES (?,?,?,?,?,?,?,?,?,?)";
+        "gym_city, gym_state, gym_image, gym_owner, gym_website, gym_instagram, " +
+        "gym_facebook, gym_phone, date_added) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?)";
       var args = [
         req.body.gym_name,
-        req.body.gym_address,
-        coords.lat,
-        coords.lng,
-        req.body.gym_long,
+        req.body.gym_address || null,
+        coords.lat || null,
+        coords.lng || null,
+        req.body.gym_city || null,
+        req.body.gym_state || null,
+        req.body.gym_image || null,
         req.body.gym_owner || null,
         req.body.gym_website || null,
         req.body.gym_instagram || null,
